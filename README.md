@@ -1,11 +1,11 @@
 # Evaluation
 
 
-## Application integration
+## 1. Application integration
 
 Microsoft Entra External ID supports a variety of industry-standard protocols and authorization flows. To enable applications to interact with Microsoft Entra external ID, they must be [registered](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) in the Microsoft Entra External ID tenant. This registration allows applications to utilize Microsoft Entra's security features and enable provides single sign-on (SSO). This section outlines the features available for your applications.
 
-### OpenID Connect and OAuth2 authorization flows
+### 1.1 OpenID Connect and OAuth2 authorization flows
 
 The following table compares the features available for OAuth 2.0 and OpenID Connect authorization flows in each type of tenant.
 
@@ -18,7 +18,7 @@ The following table compares the features available for OAuth 2.0 and OpenID Con
 - [On-Behalf-Of flow](../../identity-platform/v2-oauth2-on-behalf-of-flow.md)
 - Resource Owner Password Credentials (no) - For mobile and single page applications, use [native authentication](concept-native-authentication.md)
 
-### SAML relying parties authorization flows
+### 1.2 SAML relying parties authorization flows
 
 Microsoft Entra supports (preview) [SAML (Security Assertion Markup Language) relaying party](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-register-saml-app) applications, enabling seamless integration and secure single sign-on (SSO) for enterprise applications.
 
@@ -29,11 +29,11 @@ The authorization request may include the following parameters:
 - [ForceAuthn](https://learn.microsoft.com/en-us/entra/identity-platform/single-sign-on-saml-protocol) (Boolean value) - if true, it means that the user will be forced to reauthenticate, even if they have a valid session with Microsoft Entra external ID.
 - [NameIDPolicy](https://learn.microsoft.com/en-us/entra/identity-platform/single-sign-on-saml-protocol) this element requests a particular name ID format in the response.
 
-### Application registration
+### 1.3 Application registration
 
 [Application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?toc=%2Fentra%2Fexternal-id%2Ftoc.json&bc=%2Fentra%2Fexternal-id%2Fbreadcrumb%2Ftoc.json) in Microsoft Entra external ID is essential for establishing a trust relationship between your application and Microsoft Entra external ID. By registering your application, you obtain a unique Application (client) ID, and in some cases application secret or certificate. The application registration configure necessary settings like redirect URIs and API permissions. 
 
-#### Types of application
+#### 1.3.1 Types of application
 
 Microsoft Entra external ID supports authentication for various modern app architectures including:
 
@@ -45,7 +45,7 @@ Microsoft Entra external ID supports authentication for various modern app archi
 
 For mobile and single-page apps, [Microsoft Entra’s native authentication](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-native-authentication) allows you to have full control over the design of your mobile application sign-in experiences.
 
-#### Application Certificates & secrets
+#### 1.3.2 Application Certificates & secrets
 
 For confidential applications, like web apps that are capable of storing sensitive data, application registration **credentials** in Microsoft Entra external ID are essential for establishing a secure trust relationship with your application. These credentials verify your application's identity, enabling it to safely obtain tokens and access to web APIs. This section lists the supported application registration credentials you application can use.
 
@@ -53,46 +53,46 @@ For confidential applications, like web apps that are capable of storing sensiti
 - [Client secrets](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials)
 - [Federated credentials](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials)
 
-##### Certificates for SAML applications
+##### 1.3.2.1 Certificates for SAML applications
 
 *TBD: confirmation*. Microsoft Entra ID [automatically generates a three-year](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/application-management-certs-faq) valid X509 certificate when you create a SAML application through the Microsoft Entra Application Gallery. Administrators can manage these certificates through the Microsoft Entra admin center, PowerShell, or Microsoft Graph.
 
 To prevent disruptions due to expired certificates, Microsoft Entra ID sends email notifications 60, 30, and 7 days before a SAML certificate expires.
 
-### Delegate app registration permissions
+### 1.3.3 Delegate app registration permissions
 
 Microsoft Entra ID allows you to [delegate application](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-app-roles) creation and management permissions in several ways:
 
 - Assigning Application Owners: This method allows you to grant someone the ability to manage all aspects of Microsoft Entra configuration for a specific application.
 - Assigning built-in administrative roles like **Application Developer role** or custom role that grants broad application configuration permissions without access to other parts of Microsoft Entra external ID.
 
-### Single sign-in
+### 1.3.4 Single sign-in
 
 Microsoft Entra external ID's single sign-on (SSO) allows users to sign in using one set of credentials to multiple application. Using SSO means a user doesn't have to sign in to every application they use. With SSO, users can access all needed applications without being required to authenticate using different credentials.
 
-### Single sign-out
+### 1.3.5 Single sign-out
 
 When a user initiates a sign-out from an application (OpenID Connect and SAML) they are redirected to the Microsoft Entra logout endpoint. This ensures that the user's session is properly terminated both in the application and with Microsoft Entra ID.
 
 Microsoft Entra supports single sign-out (SSO) to ensure that when a user signs out from one application, they are also signed out from all other applications that participated in the single sign-on session.
 
-### Authentication library
+### 1.3.6 Authentication library
 
 [Microsoft Authentication Library (MSAL)](https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview) enables application developers to authenticate users and obtain security tokens to access secured web APIs, including our own web APIs or Microsoft Graph. MSAL supports both **OpenID Connect** and **OAuth2** protocols and is compatible with various application architectures and platforms, such as .NET, JavaScript, Java, Python, Android, and iOS, making it versatile and suitable for a wide range of applications.
 
-### Consent to application permissions
+### 1.3.7 Consent to application permissions
 
 Microsoft Entra External ID manages [user consent](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/user-admin-consent-overview) differently from Microsoft Entra ID for workforce, since it focuses primarily on secure and seamless authentication and authorization for external users. As a result, administrator consent is required.
 
-### Terms of use policies
+### 1.3.8 Terms of use policies
 
 Microsoft Entra external ID allows you to add a [custom attribute](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-define-custom-attributes#configure-a-single-select-checkbox-checkboxsingleselect) (type of Boolean) to the sign-up page. Before completing the sign-up, users should read and accept your policies. For more information, learn how to collect user attributes during sign-up and configure a single-select checkbox.
 
 Using the [Company branding](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers#to-customize-the-logo-privacy-link-and-terms-of-use) you can add links to "Terms of Use" and "Privacy & Cookies". These links can be localized to direct users to the relevant policy document.
 
-### Token customization
+### 1.3.9 Token customization
 
-The following features are available for both JSON Web Tokens (JWT) and SAML tokens:
+Upon successful sign-in, users will be taken back to your application with a security token. These tokens (JWT and SAML) can be customized, including:
 
 - Customize claims issued in security tokens using [Claim mapping](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-add-attributes-to-token).
 - Apply a [transformation](https://learn.microsoft.com/en-us/entra/identity-platform/jwt-claims-customization) to a user attribute issued security tokens.
@@ -101,11 +101,11 @@ The following features are available for both JSON Web Tokens (JWT) and SAML tok
 - Application roles are included in the security token by default.
 - You can [specify the lifetime](https://learn.microsoft.com/en-us/entra/identity-platform/configurable-token-lifetimes) of security tokens issued by the Microsoft Entra ID. However you cannot configure refresh and session token lifetimes.
  
-## Accounts and user profile
+## 2. Accounts and user profile
 
 User accounts for your consumers and business customers are most commonly created when users sign up for your applications. However, you can also create user accounts in the Microsoft Entra admin center or by using Microsoft Graph.
 
-### Type of accounts
+### 2.1 Type of accounts
 
 There are two types of [user accounts](https://learn.microsoft.com/en-us/entra/external-id/customers/overview-customers-ciam) you can manage in your external tenant:
 
@@ -117,7 +117,7 @@ There are two types of [user accounts](https://learn.microsoft.com/en-us/entra/e
 
 All tasks and features mentioned in this section are applicable to all types of accounts.
 
-### User attributes
+### 2.2 User attributes
 
 The user attributes you collect during sign-up are stored with the user's profile in your directory. You can choose from built-in user attributes or create custom user attributes.
 
@@ -127,7 +127,7 @@ The user attributes you collect during sign-up are stored with the user's profil
 
 The self-service sign-up offers several [input controls](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-user-attributes#custom-user-attributes-input-types) can be added to the sign-up page to collect the attributes, including text boxes, numeric text boxes radio buttons, and single select and multi-select check boxes.
 
-### Admin account management
+### 2.3 Admin account management
 
 In Microsoft Entra External ID, administrators with the appropriate permissions can access the Microsoft Entra Admin Center. This serves as the primary interface for administrators to manage users and perform various tasks. You can automate account management by using the Microsoft Graph [user](https://learn.microsoft.com/en-us/graph/api/resources/users) endpoint. The following features are available for account management:
 
@@ -141,23 +141,23 @@ In Microsoft Entra External ID, administrators with the appropriate permissions 
 - [Add users to security groups](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-use-app-roles-customers#groups).
 - Reset their email or phone multi-factor authentication
 
-### Self-service account management
+### 2.4 Self-service account management
 
 Microsoft Entra External ID provides a [self-service profile editing](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-web-app-node-sign-in-edit-profile?toc=%2Fentra%2Fexternal-id%2Ftoc.json&bc=%2Fentra%2Fexternal-id%2Fbreadcrumb%2Ftoc.json&pivots=external), enabling users to update their profile information securely. Profile edit is performed within your applications by calling the Microsoft Graph API /me endpoint using "delegated permissions" with the user tokens.
 
 Application administrators can configure multifactor authentication (MFA) to allow users to edit their profiles securely. This ensures that only authorized users can make changes to their profiles.
 
-### Account restoration (soft delete)
+### 2.5 Account restoration (soft delete)
 
 An administrator or an application with appropriate permissions can delete a user account from the directory. After you delete a user, the account remains in a suspended state for 30 days. During that 30-day window, the user account can be restored, along with all its properties.
 
-### Sign-in logs and account auditing
+### 2.6 Sign-in logs and account auditing
 
 - Microsoft Entra ID [sign-in logs](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-sign-ins) provide comprehensive information to assist administrators in monitoring and managing user activities. These logs include detailed data about both the user and the client.
 - [Application user activity](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-user-insights) offers data analytics on the activity of users for registered applications in your tenant.
 - Microsoft Entra activity logs include audit logs, which is a comprehensive report on every logged event in Microsoft Entra ID. Changes to applications, groups, users, and licenses are all captured in the Microsoft Entra audit logs.
 
-## Identity providers and authentication methods
+## 3. Identity providers and authentication methods
 
 The following table lists the authentication methods and external [identity providers](https://learn.microsoft.com/en-us/entra/external-id/identity-providers.md) for primary authentication and multifactor authentication (MFA) for external users.
 
@@ -174,8 +174,8 @@ The following table lists the authentication methods and external [identity prov
 | [OpenID Connect federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-custom-oidc-federation-customers)| Yes | Yes |  |  |
 | [SAML/WS-Fed](https://learn.microsoft.com/en-us/entra/external-id/direct-federation) to confirm with Bora| Yes| [Yes](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-saml-ws-federation-self-service-sign-up)||
 
-## Security
+## 4. Security
 
-### Password protection
+### 4.1 Password protection
 
 [Smart lockout](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-password-smart-lockout) helps lock out bad actors that try to guess your users' passwords or use brute-force methods to get in. 

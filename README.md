@@ -100,6 +100,13 @@ Microsoft Entra External ID provides a [self-service profile editing](https://le
 
 Application administrators can configure multifactor authentication (MFA) to allow users to edit their profiles securely. This ensures that only authorized users can make changes to their profiles.
 
+### Sign-in logs and account auditing
+
+- Microsoft Entra ID [sign-in logs](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-sign-ins) provide comprehensive information to assist administrators in monitoring and managing user activities. These logs include detailed data about both the user and the client.
+- [Application user activity](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-user-insights) offers data analytics on the activity of users for registered applications in your tenant.
+- Microsoft Entra activity logs include audit logs, which is a comprehensive report on every logged event in Microsoft Entra ID. Changes to applications, groups, users, and licenses are all captured in the Microsoft Entra audit logs.
+
+
 ### Account restoration (soft delete)
 
 An administrator or an application with appropriate permissions can delete a user account from the directory. After you delete a user, the account remains in a suspended state for 30 days. During that 30-day window, the user account can be restored, along with all its properties.

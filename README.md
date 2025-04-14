@@ -1,28 +1,11 @@
 # Evaluation
 
 
-## Identity providers and authentication methods
-
-The following table lists the authentication methods and external [identity providers](https://learn.microsoft.com/en-us/entra/external-id/identity-providers.md) for primary authentication and multifactor authentication (MFA) for external users.
-
-
-|Method  |Sign-in  |Sign-up  |Password reset  |MFA  |
-|---------|---------|---------|---------|---------|
-| [Email with password](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-authentication-methods-customers#email-and-password-sign-in) | Yes | Yes |  |  |
-| [Email one-time passcode](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-authentication-methods-customers#email-with-one-time-passcode-sign-in)| Yes | Yes |Yes  | Yes |
-| [SMS-based authentication](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-multifactor-authentication-customers#sms-based-authentication)|  |  |  | Yes |
-| [Apple federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-apple-federation-customers) (preview)| Yes |Yes  |  |  |
-| [Facebook federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-facebook-federation-customers) (preview)| Yes | Yes |  |  |
-| [Google federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-google-federation-customers) (preview)| Yes | Yes |  |  |
-| Microsoft peroanal account (via [OpenID Connect federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-custom-oidc-federation-customers) | Yes | Yes |  |  |
-| [OpenID Connect federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-custom-oidc-federation-customers)| Yes | Yes |  |  |
-| [SAML/WS-Fed](https://learn.microsoft.com/en-us/entra/external-id/direct-federation) to confirm with Bora| Yes| [Yes](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-saml-ws-federation-self-service-sign-up)||
-
 ## Application integration
 
 Microsoft Entra External ID supports a variety of industry-standard protocols and authorization flows. To enable applications to interact with Microsoft Entra external ID, they must be [registered](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) in the Microsoft Entra External ID tenant. This registration allows applications to utilize Microsoft Entra's security features and enable provides single sign-on (SSO). This section outlines the features available for your applications.
 
-### OpenID Connect and OAuth2 flows
+### OpenID Connect and OAuth2 authorization flows
 
 The following table compares the features available for OAuth 2.0 and OpenID Connect authorization flows in each type of tenant.
 
@@ -35,7 +18,34 @@ The following table compares the features available for OAuth 2.0 and OpenID Con
 - [On-Behalf-Of flow](../../identity-platform/v2-oauth2-on-behalf-of-flow.md)
 - Resource Owner Password Credentials (no) - For mobile and single page applications, use [native authentication](concept-native-authentication.md)
 
-#### Certificates & secrets
+### SAML relying parties authorization flows
+
+Microsoft Entra supports (preview) [SAML (Security Assertion Markup Language) relaying party](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-register-saml-app) applications, enabling seamless integration and secure single sign-on (SSO) for enterprise applications.
+
+Microsoft Entra ID supports **SP-initiated** authorization flows. In an SP-initiated SAML flow, the user starts the authentication process from the Service Provider's (relying party) application.
+
+The authorization request may include the following parameters:
+
+- [ForceAuthn](https://learn.microsoft.com/en-us/entra/identity-platform/single-sign-on-saml-protocol) (Boolean value) - if true, it means that the user will be forced to reauthenticate, even if they have a valid session with Microsoft Entra external ID.
+- [NameIDPolicy](https://learn.microsoft.com/en-us/entra/identity-platform/single-sign-on-saml-protocol) this element requests a particular name ID format in the response.
+
+### Application registration
+
+[Application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?toc=%2Fentra%2Fexternal-id%2Ftoc.json&bc=%2Fentra%2Fexternal-id%2Fbreadcrumb%2Ftoc.json) in Microsoft Entra external ID is essential for establishing a trust relationship between your application and Microsoft Entra external ID. By registering your application, you obtain a unique Application (client) ID, and in some cases application secret or certificate. The application registration configure necessary settings like redirect URIs and API permissions. 
+
+#### Types of application
+
+Microsoft Entra external ID supports authentication for various modern app architectures including:
+
+- **Web Apps**: Traditional server-side web applications that serve web pages to users and use OAuth 2.0, OpenID Connect and [SAML](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-register-saml-app) for authentication.
+- **Single-Page Apps (SPA)**: These apps have a single-page front end written primarily in JavaScript and use frameworks like Angular, React, or Vue.
+- **Mobile and Native Apps**: Applications running on mobile devices or desktop environments, using MSAL for authentication. 
+- **Web APIs**: Backend services that expose APIs for consumption by other applications, secured using OAuth 2.0.
+- **Service, Daemon, and Script Applications**: Background services or scripts that run without user interaction, using client credentials for secure access to APIs.
+
+For mobile and single-page apps, [Microsoft Entra’s native authentication](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-native-authentication) allows you to have full control over the design of your mobile application sign-in experiences.
+
+#### Application Certificates & secrets
 
 For confidential applications, like web apps that are capable of storing sensitive data, application registration **credentials** in Microsoft Entra external ID are essential for establishing a secure trust relationship with your application. These credentials verify your application's identity, enabling it to safely obtain tokens and access to web APIs. This section lists the supported application registration credentials you application can use.
 
@@ -43,13 +53,42 @@ For confidential applications, like web apps that are capable of storing sensiti
 - [Client secrets](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials)
 - [Federated credentials](https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-credentials)
 
-#### Authentication library
+##### Certificates for SAML applications
+
+*TBD: confirmation*. Microsoft Entra ID [automatically generates a three-year](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/application-management-certs-faq) valid X509 certificate when you create a SAML application through the Microsoft Entra Application Gallery. Administrators can manage these certificates through the Microsoft Entra admin center, PowerShell, or Microsoft Graph.
+
+To prevent disruptions due to expired certificates, Microsoft Entra ID sends email notifications 60, 30, and 7 days before a SAML certificate expires.
+
+### Delegate app registration permissions
+
+Microsoft Entra ID allows you to [delegate application](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-app-roles) creation and management permissions in several ways:
+
+- Assigning Application Owners: This method allows you to grant someone the ability to manage all aspects of Microsoft Entra configuration for a specific application.
+- Assigning built-in administrative roles like **Application Developer role** or custom role that grants broad application configuration permissions without access to other parts of Microsoft Entra external ID.
+
+### Single sign-in
+
+Microsoft Entra external ID's single sign-on (SSO) allows users to sign in using one set of credentials to multiple application. Using SSO means a user doesn't have to sign in to every application they use. With SSO, users can access all needed applications without being required to authenticate using different credentials.
+
+### Single sign-out
+
+When a user initiates a sign-out from an application (OpenID Connect and SAML) they are redirected to the Microsoft Entra logout endpoint. This ensures that the user's session is properly terminated both in the application and with Microsoft Entra ID.
+
+Microsoft Entra supports single sign-out (SSO) to ensure that when a user signs out from one application, they are also signed out from all other applications that participated in the single sign-on session.
+
+### Authentication library
 
 [Microsoft Authentication Library (MSAL)](https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview) enables application developers to authenticate users and obtain security tokens to access secured web APIs, including our own web APIs or Microsoft Graph. MSAL supports both **OpenID Connect** and **OAuth2** protocols and is compatible with various application architectures and platforms, such as .NET, JavaScript, Java, Python, Android, and iOS, making it versatile and suitable for a wide range of applications.
 
-### SAML relying parties
+### Consent to application permissions
 
-Microsoft Entra supports (preview) [SAML (Security Assertion Markup Language) relaying party](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-register-saml-app) applications, enabling seamless integration and secure single sign-on (SSO) for enterprise applications.
+Microsoft Entra External ID manages [user consent](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/user-admin-consent-overview) differently from Microsoft Entra ID for workforce, since it focuses primarily on secure and seamless authentication and authorization for external users. As a result, administrator consent is required.
+
+### Terms of use policies
+
+Microsoft Entra external ID allows you to add a [custom attribute](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-define-custom-attributes#configure-a-single-select-checkbox-checkboxsingleselect) (type of Boolean) to the sign-up page. Before completing the sign-up, users should read and accept your policies. For more information, learn how to collect user attributes during sign-up and configure a single-select checkbox.
+
+Using the [Company branding](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers#to-customize-the-logo-privacy-link-and-terms-of-use) you can add links to "Terms of Use" and "Privacy & Cookies". These links can be localized to direct users to the relevant policy document.
 
 ### Token customization
 
@@ -60,17 +99,25 @@ The following features are available for both JSON Web Tokens (JWT) and SAML tok
 - Include claims from external systems using [custom claims provider](https://learn.microsoft.com/en-us/entra/identity-platform/custom-claims-provider-overview).
 - [Configure groups optional](https://learn.microsoft.com/en-us/entra/identity-platform/optional-claims#configure-groups-optional-claims) claims are (limited to the group object ID).
 - Application roles are included in the security token by default.
-- You can [specify the lifetime](https://learn.microsoft.com/en-us/entra/identity-platform/configurable-token-lifetimes) of security tokens issued by the Microsoft Entra ID. However you cannot configure refresh and session token lifetimes. 
-
-### Application registration automation
-
-To streamline the application registration process for all types of applications, use Microsoft Graph or PowerShell scripts:
-
-- Application registration - [create](https://learn.microsoft.com/en-us/graph/api/application-post-applications), [list](https://learn.microsoft.com/en-us/graph/api/application-list), [get](https://learn.microsoft.com/en-us/graph/api/application-get), and [delete](https://learn.microsoft.com/en-us/graph/api/application-delete).
-- Application registraiton secrets (passwords) - [add](https://learn.microsoft.com/en-us/graph/api/application-addpassword) and [remove](https://learn.microsoft.com/en-us/graph/api/application-removepassword) secrets to an application registration.
-- Application registraiton keys - [add](https://learn.microsoft.com/en-us/graph/api/application-addkey) and [remove](https://learn.microsoft.com/en-us/graph/api/application-removekey) keys to an application registration.
+- You can [specify the lifetime](https://learn.microsoft.com/en-us/entra/identity-platform/configurable-token-lifetimes) of security tokens issued by the Microsoft Entra ID. However you cannot configure refresh and session token lifetimes.
  
 ## Accounts and user profile
+
+User accounts for your consumers and business customers are most commonly created when users sign up for your applications. However, you can also create user accounts in the Microsoft Entra admin center or by using Microsoft Graph.
+
+### Type of accounts
+
+There are two types of [user accounts](https://learn.microsoft.com/en-us/entra/external-id/customers/overview-customers-ciam) you can manage in your external tenant:
+
+- **Customer account**: Accounts that represent the customers who access your applications. They can NOT access Azure resources such as the Azure portal. A customer user can be a local account or external account.
+    - **Local accounts** are accounts that their credentials are managed in your Microsoft Entra external ID tenant, such as users who sign-in with a username and password, or username and one-time passcode.
+    - **External accounts** Are accounts which are managed by external identity providers like Facebook or Google. 
+
+- **Admin account**: Users with work accounts can manage resources in a tenant, and with an administrator role, can also manage tenants. Users with work accounts can create new consumer accounts, reset passwords, block/unblock accounts, and set permissions or assign an account to a security group.
+
+All tasks and features mentioned in this section are applicable to all types of accounts.
+
+### User attributes
 
 The user attributes you collect during sign-up are stored with the user's profile in your directory. You can choose from built-in user attributes or create custom user attributes.
 
@@ -78,7 +125,7 @@ The user attributes you collect during sign-up are stored with the user's profil
 
 - For any additional information you want to collect, you can create [custom user attributes](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-user-attributes#custom-user-attributes).
 
-Several [input controls](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-user-attributes#custom-user-attributes-input-types) can be added to the sign-up page to collect the attributes, including text boxes, numeric text boxes radio buttons, and single select and multi-select check boxes.
+The self-service sign-up offers several [input controls](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-user-attributes#custom-user-attributes-input-types) can be added to the sign-up page to collect the attributes, including text boxes, numeric text boxes radio buttons, and single select and multi-select check boxes.
 
 ### Admin account management
 
@@ -109,6 +156,23 @@ An administrator or an application with appropriate permissions can delete a use
 - Microsoft Entra ID [sign-in logs](https://learn.microsoft.com/en-us/entra/identity/monitoring-health/concept-sign-ins) provide comprehensive information to assist administrators in monitoring and managing user activities. These logs include detailed data about both the user and the client.
 - [Application user activity](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-user-insights) offers data analytics on the activity of users for registered applications in your tenant.
 - Microsoft Entra activity logs include audit logs, which is a comprehensive report on every logged event in Microsoft Entra ID. Changes to applications, groups, users, and licenses are all captured in the Microsoft Entra audit logs.
+
+## Identity providers and authentication methods
+
+The following table lists the authentication methods and external [identity providers](https://learn.microsoft.com/en-us/entra/external-id/identity-providers.md) for primary authentication and multifactor authentication (MFA) for external users.
+
+
+|Method  |Sign-in  |Sign-up  |Password reset  |MFA  |
+|---------|---------|---------|---------|---------|
+| [Email with password](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-authentication-methods-customers#email-and-password-sign-in) | Yes | Yes |  |  |
+| [Email one-time passcode](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-authentication-methods-customers#email-with-one-time-passcode-sign-in)| Yes | Yes |Yes  | Yes |
+| [SMS-based authentication](https://learn.microsoft.com/en-us/entra/external-id/customers/concept-multifactor-authentication-customers#sms-based-authentication)|  |  |  | Yes |
+| [Apple federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-apple-federation-customers) (preview)| Yes |Yes  |  |  |
+| [Facebook federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-facebook-federation-customers) (preview)| Yes | Yes |  |  |
+| [Google federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-google-federation-customers) (preview)| Yes | Yes |  |  |
+| Microsoft personal account (via [OpenID Connect federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-custom-oidc-federation-customers) | Yes | Yes |  |  |
+| [OpenID Connect federation](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-custom-oidc-federation-customers)| Yes | Yes |  |  |
+| [SAML/WS-Fed](https://learn.microsoft.com/en-us/entra/external-id/direct-federation) to confirm with Bora| Yes| [Yes](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-saml-ws-federation-self-service-sign-up)||
 
 ## Security
 

@@ -178,4 +178,25 @@ The following table lists the authentication methods and external [identity prov
 
 ### 4.1 Password protection
 
-[Smart lockout](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-password-smart-lockout) helps lock out bad actors that try to guess your users' passwords or use brute-force methods to get in. 
+[Smart lockout](https://learn.microsoft.com/en-us/entra/identity/authentication/howto-password-smart-lockout) helps lock out bad actors that try to guess your users' passwords or use brute-force methods to get in.
+
+## 5. Authorization
+
+Authorization in an app refers to the process of determining what actions a user is allowed to perform within the application.
+
+### 5.1 Role-based access control
+
+[Role-based access control (RBAC)](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-use-app-roles-customers) is a popular mechanism to enforce authorization in applications. When an organization uses RBAC, an application developer defines roles for the application. An administrator can then assign roles to different users and groups to control who has access to content and functionality in the application. Then, applications that receive the access token in a request can then make authorization decisions based on the values in the `roles` claim.
+
+#### 5.1.1 Groups-based access control
+
+Application developers can use [security groups](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-use-app-roles-customers#groups) to implement Role-based access control (RBAC) in their applications, where the memberships of the user in specific groups are interpreted as their role memberships. When an organization uses security groups, a `groups` claim is included in the token with all of the groups to which the user is assigned. Apps that receive the access token then make authorization decisions based on the values in the `groups` claim.
+
+#### 5.1.2 Custom data store
+
+App roles and groups both store information about user assignments in the Microsoft Entra directory. Another option for managing user role information that is available to developers is to maintain the information in the user's profile, like 'job title' or outside of the directory in a custom data store, using [custom claims provider](https://learn.microsoft.com/en-us/entra/identity-platform/custom-claims-provider-overview).
+
+### 5.3 Require user assignment
+
+Applications registered in a Microsoft Entra tenant are, by default, available to all users of the tenant who authenticate successfully. However, it's possible to configure application to [restrict access](https://learn.microsoft.com/en-us/entra/identity-platform/howto-restrict-your-app-to-a-set-of-users) to certain set of users or apps. Unassigned users cannot complete the sign-in process.
+

@@ -33,6 +33,8 @@ The authorization request may include the following parameters:
 
 [Application registration](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?toc=%2Fentra%2Fexternal-id%2Ftoc.json&bc=%2Fentra%2Fexternal-id%2Fbreadcrumb%2Ftoc.json) in Microsoft Entra external ID is essential for establishing a trust relationship between your application and Microsoft Entra external ID. By registering your application, you obtain a unique Application (client) ID, and in some cases application secret or certificate. The application registration configure necessary settings like redirect URIs and API permissions. 
 
+Administrator can: list, register, update, delete applications.
+
 #### 1.3.1 Types of application
 
 Microsoft Entra external ID supports authentication for various modern app architectures including:
@@ -233,7 +235,9 @@ Upon successful sign-in, users are redirected back to the application with a sec
 
 The sign-in and sign-up pages can be [branded](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers) (per application) to create a consistent appearance with your application. This includes customizing elements such as the background image, background color, favicon, layout, header, footer, labels and links, sign-in page text, and uploading custom CSS files for further tailoring of the sign-in experience.
 
-##### 3.2.7.1 Localization
+Administrator can: list, create, update, delete custom brandings.
+
+##### 3.2.7.1 Branding localization
 
 You can create a personalized sign-in experience for users who sign in using a [specific browser language](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-languages-customers) by customizing the branding elements for that browser language. This customization overrides any configurations made to the default branding.
 
@@ -243,6 +247,16 @@ You can create a personalized sign-in experience for users who sign in using a [
 
 - 1,024 characters maximum
 - Use Markdown syntax to format text including: Hyperlinks, bold, italics and underline.
+
+#### 3.2.8 Localization
+
+Microsoft provides the translations for 36 languages including languages that are read right-to-left, such as Arabic and Hebrew, are displayed in the opposite direction compared to languages that are read left-to-right.
+
+##### 3.2.8.1 Language selection
+
+Microsoft Entra external ID uses the browser's language settings to determine the language for the sign-in experience. If the browser is set to a specific language, that language will be used for the sign-in page. 
+
+Applications can specify a locale parameter (`ui_locales` and `mkt`) in the authentication URL to enforce a particular language.
 
 ## 4. Security
 
@@ -286,11 +300,17 @@ App roles and groups both store information about user assignments in the Micros
 
 Applications registered in a Microsoft Entra tenant are, by default, available to all users of the tenant who authenticate successfully. However, it's possible to configure application to [restrict access](https://learn.microsoft.com/en-us/entra/identity-platform/howto-restrict-your-app-to-a-set-of-users) to certain set of users or apps. Unassigned users cannot complete the sign-in process.
 
-## 6. ?????
+## 6. Management
 
+### 6.1 Role-based access control
 
+To manage Microsoft Entra External ID, specific permissions are required. These permissions are typically assigned through [built-in roles](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference) or [custom roles](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/custom-create?tabs=admin-center) in Microsoft Entra external ID.
 
+### 6.2 Search
 
+#### 6.2.1 Search users
+
+Users can be searched in the Microsoft Entra admin center by name, email address, or other attributes. For more complex queries, such as finding users who signed in with social accounts, use Microsoft Graph API or PowerShell.
 
 ## 7. Privacy
 
@@ -298,5 +318,22 @@ Applications registered in a Microsoft Entra tenant are, by default, available t
 
 The authentication request from the application to Microsoft Entra external ID does not contain personal data. Developers have the option to include the “log-in hint” parameter in the authentication request. The use of domain hint is optional.
 
+## 8. Reports and logs
 
+### 8.1 Audit log
 
+Microsoft Entra audit logs provide a comprehensive report on every logged event within your Microsoft Entra ID tenant. These logs help determine who made changes to applications, users, groups, conditional access policies and more. 
+
+The logs contain information about the activity, like the application or individual that made the changes, the target object, the modified properties and more.
+
+Audit logs are retained for seven days. You can effectively download or [export the audit logs](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-azure-monitor) in Microsoft Entra ID for compliance, monitoring, and analysis purposes.  
+
+### 8.2 Sign-in log
+
+The sign-in logs provide detailed records of all sign-in activities within Microsoft Entra external ID. Sign-in logs capture details such as the date and time of the sign-in, the user's identity, the application used, the device and browser information, and the sign-in status (success or failure).
+
+Sign logs are retained for seven days. You can effectively download or [export the sign logs](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-azure-monitor) in Microsoft Entra ID for compliance, monitoring, and analysis purposes.  
+
+### 8.3 Application user activity
+
+The “Application user activity” feature provides data analytics on user activity and engagement for registered applications in your tenant. You can use this feature to view, query, and analyze user activity data in the Microsoft Entra admin center and Graph API. This feature can help you uncover valuable insights that can aid strategic decisions and drive business growth.

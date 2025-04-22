@@ -63,45 +63,48 @@ Application registration in Microsoft Entra external ID supports multiple creden
 
 To prevent disruptions due to expired certificates, Microsoft Entra ID sends email notifications 60, 30, and 7 days before a SAML certificate expires.
 
-### 1.3.3 Delegate app registration permissions
+#### 1.3.3 Delegate app registration permissions
 
 Microsoft Entra ID allows you to [delegate application](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-app-roles) creation and management permissions in several ways:
 
 - Assigning Application Owners: This method allows you to grant someone the ability to manage all aspects of Microsoft Entra configuration for a specific application.
 - Assigning built-in administrative roles like **Application Developer role** or custom role that grants broad application configuration permissions without access to other parts of Microsoft Entra external ID.
 
-### 1.3.4 Single sign-in
+### 1.4 Single sign-in
 
 Microsoft Entra external ID's single sign-on (SSO) allows users to sign in using one set of credentials to multiple application. Using SSO means a user doesn't have to sign in to every application they use. With SSO, users can access all needed applications without being required to authenticate using different credentials.
 
-#### 1.3.4.1 Keep me signed in (KMSI)
+#### 1.4.1 Keep me signed in (KMSI)
 
 When a user selects the "Stay signed in?" prompt during the sign-in process, a persistent authentication session is set allowing the user to remain signed in even after closing and reopening their browse. The KMSI setting can be enabled or disabled by administrators in the Microsoft Entra admin center.
 
-### 1.3.5 Single sign-out
+#### 1.4.1 Single sign-out
 
 When a user initiates a sign-out from an application (OpenID Connect and SAML) they are redirected to the Microsoft Entra logout endpoint. This ensures that the user's session is properly terminated both in the application and with Microsoft Entra ID.
 
 Microsoft Entra uses **front-channel** Logout to ensure that when a user signs out from one application, they are also signed out from all other applications that participated in the single sign-on session. OpenID Connect **back-channel** logout is currently not supported.
 
-
-### 1.3.6 Authentication library
+### 1.5 Authentication library
 
 [Microsoft Authentication Library (MSAL)](https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview) enables application developers to authenticate users and obtain security tokens to access secured web APIs, including our own web APIs or Microsoft Graph. MSAL supports both **OpenID Connect** and **OAuth2** protocols and is compatible with various application architectures and platforms, such as .NET, JavaScript, Java, Python, Android, and iOS, making it versatile and suitable for a wide range of applications.
 
-### 1.3.7 Consent to application permissions
+### 1.6 Consent to application permissions
 
 Microsoft Entra External ID manages [user consent](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/user-admin-consent-overview) differently from Microsoft Entra ID for workforce, since it focuses primarily on secure and seamless authentication and authorization for external users. As a result, administrator consent is required. External users don't consent to application permissions. 
 
-### 1.3.8 Terms of use policies
+### 1.7 Terms of use policies
 
-Microsoft Entra external ID allows you to add a [custom attribute](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-define-custom-attributes#configure-a-single-select-checkbox-checkboxsingleselect) (type of Boolean) to the sign-up page. Before completing the sign-up, users should read and accept your policies. For more information, learn how to collect user attributes during sign-up and configure a single-select checkbox.
+#### 1.7.1 Sign-up
 
-Using the [Company branding](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers#to-customize-the-logo-privacy-link-and-terms-of-use) you can add links to "Terms of Use" and "Privacy & Cookies". These links can be localized to direct users to the relevant policy document.
+Microsoft Entra external ID allows you to add a [custom attribute](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-define-custom-attributes#configure-a-single-select-checkbox-checkboxsingleselect) (type of Boolean) to the sign-up page. Before completing the sign-up, users should read and accept your policies. For more information, learn how to collect user attributes during sign-up and configure a single-select checkbox. The text and the link to the policies can be localized.
 
-### 1.3.9 Security tokens
+#### 1.7.2 Footer
 
-### 1.3.9.1 Token customization
+Using the [company branding](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers#to-customize-the-logo-privacy-link-and-terms-of-use) you can add links to "Terms of Use" and "Privacy & Cookies". The text and the link to the policies can be localized.
+
+### 1.8 Security tokens
+
+#### 1.8.1 Token customization
 
 Upon successful sign-in, users will be taken back to your application with a security token. These tokens (JWT and SAML) can be customized (per application), including:
 
@@ -112,9 +115,9 @@ Upon successful sign-in, users will be taken back to your application with a sec
 - Application roles are included in the security token by default.
 - You can [specify the lifetime](https://learn.microsoft.com/en-us/entra/identity-platform/configurable-token-lifetimes) of security tokens issued by the Microsoft Entra ID. However you cannot configure refresh and session token lifetimes.
 
-### 1.3.9.2 Token signing keys
+#### 1.8.2 Token signing keys
 
-Microsoft Entra external ID [signing keys roll](https://learn.microsoft.com/en-us/entra/identity-platform/signing-key-rollover) on periodically. In emergency situations, tenant administrators can update them immediately. The public keys are avalible via OpenID Connect discovery document and SAML/WS-Fed federation metadata document. All applications that use the Microsoft Entra external ID should be able to programmatically handle the key rollover process.
+Microsoft Entra external ID [signing keys roll](https://learn.microsoft.com/en-us/entra/identity-platform/signing-key-rollover) on periodically. In emergency situations, tenant administrators can update them immediately. The public keys are available via OpenID Connect discovery document and SAML/WS-Fed federation metadata document. All applications that use the Microsoft Entra external ID should be able to programmatically handle the key rollover process. 
  
 ## 2. Accounts and user profile
 
@@ -193,6 +196,54 @@ The following table lists the authentication methods and external [identity prov
 
 Administrators with certain roles can enable Multi-Factor Authentication (MFA) through conditional access policies for individual users and security groups. When a user signs in and is prompted for MFA, they must complete the MFA challenges.
 
+### 3.2 Sign-up and sign-in experience
+
+#### 3.2.1 Unified sign-in page
+
+Microsoft Entra external ID simplifies user sign-up, sign-in, and password reset processes through a unified interface. Users have the option to sign-up or sign-in with a username, reset their password, or sign-in using an external account such as Facebook or Google.
+
+Admin can:
+
+- Set up user sign-in options, such as email and password or email and one-time passcode.
+- Enable or disable the self-service password reset option.
+- Set up the external identity providers available to users, such as Google and Facebook.
+- TBD, Disable the sign-up option.
+
+#### 3.2.2 Sign-up direct link
+
+Applications can initiate the authorization request with the sign-up flow by using the 'prompt=create' query parameter. You can also use the 'login_hint' query parameter to provide an email address. If given, Microsoft Entra external ID fills in the sign-up email address, requiring the user to only validate their email and enter profile details.
+
+#### 3.2.3 Prepopulate the sign-in name
+
+Apps can include the 'login_hint' query parameter with the user's sign-in name in the authorization request. Microsoft Entra external ID fills in the sign-in name, while the user only needs to provide the password or enter the verification code.
+
+#### 3.2.4 Account selection
+
+When a user attempts to sign in and users are already signed in within the same web browser, an account selector will be displayed. This will prompt users to choose the account with which they wish to sign in.
+
+#### 3.2.5 Auto-fill SMS code
+
+The automatic filling of SMS verification codes into sign-in page is typically a feature provided by the operating system of the device rather than Microsoft Entra ID itself. For example, both iOS and Android have features that can detect SMS messages containing verification codes and offer to auto-fill them into the appropriate field Microsoft Entra ID.
+
+#### 3.2.6 Redirect back to the application
+
+Upon successful sign-in, users are redirected back to the application with a security token. In instances where an error occurs during the authentication process, users may be redirected to an error page within the application, or the authentication process will be terminated and an error page which details the issue and provides necessary actions for resolution.
+
+#### 3.2.6 Branding
+
+The sign-in and sign-up pages can be [branded](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers) (per application) to create a consistent appearance with your application. This includes customizing elements such as the background image, background color, favicon, layout, header, footer, labels and links, sign-in page text, and uploading custom CSS files for further tailoring of the sign-in experience.
+
+##### 3.2.7.1 Localization
+
+You can create a personalized sign-in experience for users who sign in using a [specific browser language](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-languages-customers) by customizing the branding elements for that browser language. This customization overrides any configurations made to the default branding.
+
+##### 3.2.7.2 Sign-in Page Text
+
+[Text can be added](https://learn.microsoft.com/en-us/entra/external-id/customers/how-to-customize-branding-customers#to-customize-the-sign-in-form) to the bottom of the sign-in page. This text can be used to communicate additional information, such as help desk contact details or legal statements.
+
+- 1,024 characters maximum
+- Use Markdown syntax to format text including: Hyperlinks, bold, italics and underline.
+
 ## 4. Security
 
 ### 4.1 Password protection
@@ -203,15 +254,15 @@ Administrators with certain roles can enable Multi-Factor Authentication (MFA) t
 
 Microsoft Entra ID enforces [password policies](https://learn.microsoft.com/en-us/entra/identity/authentication/concept-password-ban-bad-combined-policy) to enhance security and ensure robust password practices.
 
-TBD: check which features are avalible in MEEID
+TBD: check which features are available in MEEID
 
-### 4.2 Bot protection
+### 4.3 Bot protection
 
-#### 4.2.1 Arkose fraud protection
+#### 4.3.1 Arkose fraud protection
 
 Arkose Labs' New Account Fraud Solution is designed to combat the creation of fraudulent accounts to ensure the security of your application while maintaining a seamless onboarding experience for legitimate users.
 
-#### 4.2.2 Cloudflare WAF
+#### 4.3.2 Cloudflare WAF
 
 [Cloudflare Web Application Firewall](https://learn.microsoft.com/en-us/entra/external-id/customers/tutorial-configure-cloudflare-integration) (Cloudflare WAF) to protect your organization from attacks, such as distributed denial of service (DDoS), malicious bots, Open Worldwide Application Security Project (OWASP) Top-10 security risks, and others
 
@@ -235,14 +286,17 @@ App roles and groups both store information about user assignments in the Micros
 
 Applications registered in a Microsoft Entra tenant are, by default, available to all users of the tenant who authenticate successfully. However, it's possible to configure application to [restrict access](https://learn.microsoft.com/en-us/entra/identity-platform/howto-restrict-your-app-to-a-set-of-users) to certain set of users or apps. Unassigned users cannot complete the sign-in process.
 
-## 6. User experince
+## 6. ?????
 
-### 6.1 Auto-fill SMS code
 
-The automatic filling of SMS verification codes into sign-in page is typically a feature provided by the operating system of the device rather than Microsoft Entra ID itself. For example, both iOS and Android have features that can detect SMS messages containing verification codes and offer to auto-fill them into the appropriate field Microsoft Entra ID.
 
-### 6.2 Account selection
 
-When a user attempts to sign in and users are already signed in within the same web browser, an account selector will be displayed. This will prompt users to choose the account with which they wish to sign in.
+
+## 7. Privacy
+
+### 7.1 Authentication request URL
+
+The authentication request from the application to Microsoft Entra external ID does not contain personal data. Developers have the option to include the “log-in hint” parameter in the authentication request. The use of domain hint is optional.
+
 
 
